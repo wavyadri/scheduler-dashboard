@@ -29,20 +29,27 @@ const data = [
 ];
 
 class Dashboard extends Component {
-  state = { loading: false };
+  state = { loading: false, focused: null };
 
   render() {
-    const dashboardClasses = classnames('dashboard');
-    const panels = data.map((panel) => {
-      return (
-        <Panel
-          key={panel.id}
-          id={panel.id}
-          label={panel.label}
-          value={panel.value}
-        />
-      );
+    const dashboardClasses = classnames('dashboard', {
+      'dashboard--focused': this.state.focused,
     });
+    const panels = data
+      .filter(
+        (panel) =>
+          this.state.focused === null || this.state.focused === panel.id
+      )
+      .map((panel) => {
+        return (
+          <Panel
+            key={panel.id}
+            id={panel.id}
+            label={panel.label}
+            value={panel.value}
+          />
+        );
+      });
 
     return (
       <>
